@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='django-devserver',
+    name='django-devserver-redux',
     version=".".join(map(str, __import__("devserver").__version__)),
     description='Drop-in replacement for Django\'s runserver',
-    author='David Cramer',
-    author_email='dcramer@gmail.com',
-    url='http://github.com/dcramer/django-devserver',
+    author='Yousuf Jawwad',
+    author_email='yousuf@maher.pk',
+    url='https://github.com/maherpk/django-devserver-redux',
     packages=find_packages(),
     classifiers=[
         "Framework :: Django",

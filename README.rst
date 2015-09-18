@@ -2,7 +2,10 @@
 About
 -----
 
-A drop in replacement for Django's built-in runserver command. Features include:
+A drop in replacement for Django's built-in runserver command, built on top of django-devserver.
+The reason for this fork is slow interaction with community and lack of bug fixes.
+
+Features include:
 
 * An extendable interface for handling things such as real-time logging.
 * Integration with the werkzeug interactive debugger.
@@ -17,7 +20,7 @@ Installation
 
 To install the latest stable version::
 
-	pip install git+git://github.com/dcramer/django-devserver#egg=django-devserver
+	pip install git+git://github.com/maherpk/django-devserver-redux#egg=django-devserver-redux
 
 
 django-devserver has some optional dependancies, which we highly recommend installing.
@@ -31,7 +34,7 @@ You will need to include ``devserver`` in your ``INSTALLED_APPS``::
 
 	INSTALLED_APPS = (
 	    ...
-	    'devserver',            
+	    'devserver',
 	)
 
 -----
@@ -44,7 +47,7 @@ Once installed, using the new runserver replacement is easy. You must specify ve
 
 Note: This will force ``settings.DEBUG`` to ``True``.
 
-By default, ``devserver`` would bind itself to 127.0.0.1:8000. To change this default, ``DEVSERVER_DEFAULT_ADDR`` and ``DEVSERVER_DEFAULT_PORT`` settings are available. 
+By default, ``devserver`` would bind itself to 127.0.0.1:8000. To change this default, ``DEVSERVER_DEFAULT_ADDR`` and ``DEVSERVER_DEFAULT_PORT`` settings are available.
 
 Additional CLI Options
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +107,7 @@ django-devserver includes several modules by default, but is also extendable by 
 	    'devserver.modules.sql.SQLRealTimeModule',
 	    'devserver.modules.sql.SQLSummaryModule',
 	    'devserver.modules.profile.ProfileSummaryModule',
-	
+
 	    # Modules not enabled by default
 	    'devserver.modules.ajax.AjaxDumpModule',
 	    'devserver.modules.profile.MemoryUseModule',
@@ -115,13 +118,13 @@ django-devserver includes several modules by default, but is also extendable by 
 devserver.modules.sql.SQLRealTimeModule
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Outputs queries as they happen to the terminal, including time taken.
-  
+
 Disable SQL query truncation (used in SQLRealTimeModule) with the ``DEVSERVER_TRUNCATE_SQL`` setting::
-  
+
 	DEVSERVER_TRUNCATE_SQL = False
 
 Filter SQL queries with the ``DEVSERVER_FILTER_SQL`` setting::
-  
+
 	DEVSERVER_FILTER_SQL = (
 		re.compile('djkombu_\w+'),  # Filter all queries related to Celery
 	)
@@ -144,7 +147,7 @@ devserver.modules.profile.LineProfilerModule
 Profiles view methods on a line by line basis. There are 2 ways to profile your view functions, by setting setting.DEVSERVER_AUTO_PROFILE = True or by decorating the view functions you want profiled with devserver.modules.profile.devserver_profile. The decoration takes an optional argument ``follow`` which is a sequence of functions that are called by your view function that you would also like profiled.
 
 An example of a decorated function::
-  
+
 	@devserver_profile(follow=[foo, bar])
 	def home(request):
 	    result['foo'] = foo()
@@ -178,7 +181,7 @@ devserver.modules.ajax.AjaxDumpModule
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Outputs the content of any AJAX responses
-  
+
 Change the maximum response length to dump with the ``DEVSERVER_AJAX_CONTENT_LENGTH`` setting::
 
 	DEVSERVER_AJAX_CONTENT_LENGTH = 300
@@ -197,13 +200,13 @@ Building modules in devserver is quite simple. In fact, it resembles the middlew
 Let's take a sample module, which simple tells us when a request has started, and when it has finished::
 
 	from devserver.modules import DevServerModule
-	
+
 	class UselessModule(DevServerModule):
 	    logger_name = 'useless'
-	    
+
 	    def process_request(self, request):
 	        self.logger.info('Request started')
-	    
+
 	    def process_response(self, request, response):
 	        self.logger.info('Request ended')
 
