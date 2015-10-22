@@ -201,7 +201,7 @@ class Command(BaseCommand):
             if use_werkzeug:
                 run_simple(
                     self.addr, int(self.port), DebuggedApplication(app, True),
-                    use_reloader=False, use_debugger=True)
+                    use_reloader=True, use_debugger=True)
             else:
                 run(self.addr, int(self.port), app, mixin, ipv6=self.use_ipv6)
 
