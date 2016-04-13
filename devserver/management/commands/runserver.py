@@ -149,7 +149,14 @@ class Command(BaseCommand):
                 debug.technical_500_response = null_technical_500_response
 
         self.stdout.write("Validating models...\n\n")
-        self.validate(display_num_errors=True)
+
+        if hasattr(self, 'validate'):
+            # Before Django 1.9
+            self.validate(display_num_errors=True)
+        else:
+            # Django 1.9+
+            self.check(display_num_errors=True)
+
         self.stdout.write((
             "Django version %(version)s, using settings %(settings)r\n"
             "Running django-devserver %(devserver_version)s\n"
