@@ -1,7 +1,12 @@
 from devserver.models import MODULES
 
+from .compat import MiddlewareMixin
 
-class DevServerMiddleware(object):
+
+class DevServerMiddleware(MiddlewareMixin):
+    def __init__(self, get_response=None):
+        self.get_response = get_response
+
     def should_process(self, request):
         from django.conf import settings
 
