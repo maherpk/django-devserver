@@ -18,6 +18,7 @@ except ImportError:
     from django.db.backends import util  # noqa
 
 from django.conf import settings as django_settings
+from django.db.backends.postgresql import base
 
 from devserver.modules import DevServerModule
 from devserver.utils.time import ms_from_timedelta
@@ -126,11 +127,13 @@ class SQLRealTimeModule(DevServerModule):
         if not issubclass(util.CursorDebugWrapper, DatabaseStatTracker):
             self.old_cursor = util.CursorDebugWrapper
             util.CursorDebugWrapper = DatabaseStatTracker
+            base.CursorDebugWrapper = DatabaseStatTracker
         DatabaseStatTracker.logger = self.logger
 
     def process_complete(self, request):
         if issubclass(util.CursorDebugWrapper, DatabaseStatTracker):
             util.CursorDebugWrapper = self.old_cursor
+            base.CursorDebugWrapper = self.old_cursor
 
 
 class SQLSummaryModule(DevServerModule):
